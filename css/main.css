@@ -697,9 +697,14 @@ select.form-control {
     border-radius: 11px;
 }
 
-.texto-endereco {
+.texto-usuario {
     margin-bottom: 0;
     color: var(--color-black);
+}
+
+.texto-endereco {
+    margin-bottom: 0;
+    /* color: var(--color-black); */
 }
 
 .cidade-endereco {

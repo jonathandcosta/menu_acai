@@ -356,6 +356,7 @@ cardapio.metodos = {
 
   // validação antes de prosseguir para a etapa 3
   resumoPedido: () => {
+    let usuario = $('#txtNomeUsuario').val().trim();
     let cep = $('#txtCEP').val().trim();
     let endereco = $('#txtEndereco').val().trim();
     let bairro = $('#txtBairro').val().trim();
@@ -363,6 +364,11 @@ cardapio.metodos = {
     let uf = $('#ddlUf').val().trim();
     let numero = $('#txtNumero').val().trim();
     let complemento = $('#txtComplemento').val().trim();
+
+    if (usuario.length <= 0) {
+      cardapio.metodos.mensagem('Por favor, volte uma etapa, qual o seu nome?');
+      $('#txtNomeUsuario').focus();
+    }
 
     if (cep.length <= 0) {
       cardapio.metodos.mensagem('Informe o CEP, por favor.');
@@ -401,6 +407,7 @@ cardapio.metodos = {
     }
 
     MEU_ENDERECO = {
+      usuario: usuario,
       cep: cep,
       endereco: endereco,
       bairro: bairro,
@@ -428,12 +435,14 @@ cardapio.metodos = {
       $('#listaItensResumo').append(temp);
     });
 
+    $('#resumoUsuario').html(`Cliente: ${MEU_ENDERECO.usuario}`);
     $('#resumoEndereco').html(
       `${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`,
     );
     $('#cidadeEndereco').html(
       `${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep} ${MEU_ENDERECO.complemento}`,
     );
+    $('#referencia').html(`${MEU_ENDERECO.complemento}`);
 
     cardapio.metodos.finalizarPedido();
   },
@@ -442,6 +451,7 @@ cardapio.metodos = {
   finalizarPedido: () => {
     if (MEU_CARRINHO.length > 0 && MEU_ENDERECO != null) {
       var texto = 'Olá! gostaria de fazer um pedido:';
+      texto += `\n*Meu nome é:*${MEU_ENDERECO.usuario}\n`;
       texto += `\n*Itens do pedido:*\n\n\${itens}`;
       texto += '\n*Endereço de entrega:*';
       texto += `\n${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`;

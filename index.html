@@ -423,6 +423,13 @@
 
                 <div id="localEntrega" class="row mr-0 ml-0 animated fadeIn hidden">
 
+                    <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label>Nome:</label>
+                            <input id="txtNomeUsuario" type="text" class="form-control" />
+                        </div>
+                    </div>
+
                     <div class="col-12 col-lg-4 col-md-4 col-sm-12">
                         <div class="form-group container-cep">
                             <label>CEP:</label>
@@ -532,10 +539,12 @@
                             <i class="fas fa-map-marked-alt"></i>
                         </div>
                         <div class="dados-produto">
-                            <p class="texto-endereco">
-                                <b id="resumoEndereco"></b>
-                            </p>
+                            <p class="texto-usuario"><b id="resumoUsuario"></b></p>
+                            <br />
+                            <p class="texto-endereco" id="resumoEndereco"></p>
                             <p class="cidade-endereco" id="cidadeEndereco"></p>
+                            <br />
+                            <p class="cidade-endereco" id="referencia"></p>
                         </div>
                     </div>
 
