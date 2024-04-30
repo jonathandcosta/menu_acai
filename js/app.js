@@ -440,7 +440,7 @@ cardapio.metodos = {
       `${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`,
     );
     $('#cidadeEndereco').html(
-      `${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep} ${MEU_ENDERECO.complemento}`,
+      `${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep}`,
     );
     $('#referencia').html(`${MEU_ENDERECO.complemento}`);
 
