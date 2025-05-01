@@ -10,7 +10,7 @@ var MEU_ENDERECO = null;
 var VALOR_CARRINHO = 0;
 var VALOR_ENTREGA = 7.5;
 
-var CELULAR_EMPRESA = '5584994511294';
+var CELULAR_EMPRESA = '5584999043539';
 
 cardapio.eventos = {
   init: () => {
@@ -35,6 +35,7 @@ cardapio.metodos = {
       let temp = cardapio.templates.item
         .replace(/\${img}/g, e.img)
         .replace(/\${nome}/g, e.name)
+        .replace(/\${dsc}/g, e.dsc)
         .replace(/\${preco}/g, e.price.toFixed(2).replace('.', ','))
         .replace(/\${id}/g, e.id);
 
@@ -219,6 +220,7 @@ cardapio.metodos = {
         let temp = cardapio.templates.itemCarrinho
           .replace(/\${img}/g, e.img)
           .replace(/\${nome}/g, e.name)
+          .replace(/\${dsc}/g, e.dsc)
           .replace(/\${preco}/g, e.price.toFixed(2).replace('.', ','))
           .replace(/\${id}/g, e.id)
           .replace(/\${qntd}/g, e.qntd);
@@ -429,6 +431,7 @@ cardapio.metodos = {
       let temp = cardapio.templates.itemResumo
         .replace(/\${img}/g, e.img)
         .replace(/\${nome}/g, e.name)
+        .replace(/\${dsc}/g, e.dsc)
         .replace(/\${preco}/g, e.price.toFixed(2).replace('.', ','))
         .replace(/\${qntd}/g, e.qntd);
 
@@ -531,13 +534,16 @@ cardapio.metodos = {
 
 cardapio.templates = {
   item: `
-        <div class="col-12 col-lg-3 col-md-3 col-sm-6 mb-5 animated fadeInUp">
+        <div class="col-12 col-lg-3 col-md-3 col-sm-3 mb-5 animated fadeInUp">
             <div class="card card-item" id="\${id}">
                 <div class="img-produto">
                     <img src="\${img}" />
                 </div>
                 <p class="title-produto text-center mt-4">
                     <b>\${nome}</b>
+                </p>
+                <p class="subtitle-produto text-center">
+                    <b>\${dsc}</b>
                 </p>
                 <p class="price-produto text-center">
                     <b>R$ \${preco}</b>
@@ -546,7 +552,10 @@ cardapio.templates = {
                     <span class="btn-menos" onclick="cardapio.metodos.diminuirQuantidade('\${id}')"><i class="fas fa-minus"></i></span>
                     <span class="add-numero-itens" id="qntd-\${id}">0</span>
                     <span class="btn-mais" onclick="cardapio.metodos.aumentarQuantidade('\${id}')"><i class="fas fa-plus"></i></span>
-                    <span class="btn btn-add" onclick="cardapio.metodos.adicionarAoCarrinho('\${id}')"><i class="fa fa-shopping-bag"></i></span>
+                    <span class="btn btn-add" onclick="cardapio.metodos.adicionarAoCarrinho('\${id}')">Comprar</span>
+                </div>
+                <div class="add-carrinho molhos">
+                      <span class="btn-molhos" onclick="cardapio.metodos.aumentarQuantidade('\${id}')">Adicionar molho</span>
                 </div>
             </div>
         </div>
@@ -559,6 +568,7 @@ cardapio.templates = {
             </div>
             <div class="dados-produto">
                 <p class="title-produto"><b>\${nome}</b></p>
+                <p class="title-produto"><b>\${dsc}</b></p>
                 <p class="price-produto"><b>R$ \${preco}</b></p>
             </div>
             <div class="add-carrinho">
