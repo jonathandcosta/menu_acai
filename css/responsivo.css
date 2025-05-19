@@ -175,6 +175,7 @@
     padding-left: 15px;
     padding-right: 15px;
     display: grid;
+    height: 180px;
   }
 
   .modal-full .title-produto,

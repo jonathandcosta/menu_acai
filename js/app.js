@@ -554,9 +554,6 @@ cardapio.templates = {
                     <span class="btn-mais" onclick="cardapio.metodos.aumentarQuantidade('\${id}')"><i class="fas fa-plus"></i></span>
                     <span class="btn btn-add" onclick="cardapio.metodos.adicionarAoCarrinho('\${id}')">Comprar</span>
                 </div>
-                <div class="add-carrinho molhos">
-                      <span class="btn-molhos" onclick="cardapio.metodos.aumentarQuantidade('\${id}')">Adicionar molho</span>
-                </div>
             </div>
         </div>
     `,
@@ -568,7 +565,7 @@ cardapio.templates = {
             </div>
             <div class="dados-produto">
                 <p class="title-produto"><b>\${nome}</b></p>
-                <p class="title-produto"><b>\${dsc}</b></p>
+                <p class="subtitle-produto"><b>\${dsc}</b></p>
                 <p class="price-produto"><b>R$ \${preco}</b></p>
             </div>
             <div class="add-carrinho">
