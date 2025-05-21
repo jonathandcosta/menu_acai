@@ -257,7 +257,8 @@ a.navbar-brand {
 }
 
 .card-item {
-  height: 400px;
+  height: 350px;
+  width: 225px;
 }
 
 .card-item .img-produto img {

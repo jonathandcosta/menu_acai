@@ -99,6 +99,7 @@
 
   .card-item {
     height: auto;
+    width: auto;
     justify-content: center;
   }
 
@@ -175,7 +176,7 @@
     padding-left: 15px;
     padding-right: 15px;
     display: grid;
-    height: 180px;
+    /* height: 180px; */
   }
 
   .modal-full .title-produto,
