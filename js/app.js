@@ -7,6 +7,8 @@ var cardapio = {};
 var MEU_CARRINHO = [];
 var MEU_ENDERECO = null;
 
+var forma_pagamento = null;
+
 var VALOR_CARRINHO = 0;
 var VALOR_ENTREGA = 7.5;
 
@@ -157,6 +159,7 @@ cardapio.metodos = {
     if (etapa == 1) {
       $('#lblTituloEtapa').text('Seu carrinho:');
       $('#itensCarrinho').removeClass('hidden');
+      $('#formaPagamento').addClass('hidden');
       $('#localEntrega').addClass('hidden');
       $('#resumoCarrinho').addClass('hidden');
 
@@ -165,14 +168,17 @@ cardapio.metodos = {
 
       $('#btnEtapaPedido').removeClass('hidden');
       $('#btnEtapaEndereco').addClass('hidden');
+      $('#btnEtapaPagamento').addClass('hidden');
       $('#btnEtapaResumo').addClass('hidden');
+      $('#btnEtapaEnviar').addClass('hidden');
       $('#btnVoltar').addClass('hidden');
     }
 
     if (etapa == 2) {
-      $('#lblTituloEtapa').text('Endereço de entrega:');
+      $('#lblTituloEtapa').text('Forma de Pagamento:');
       $('#itensCarrinho').addClass('hidden');
-      $('#localEntrega').removeClass('hidden');
+      $('#formaPagamento').removeClass('hidden');
+      $('#localEntrega').addClass('hidden');
       $('#resumoCarrinho').addClass('hidden');
 
       $('.etapa').removeClass('active');
@@ -182,14 +188,19 @@ cardapio.metodos = {
       $('#btnEtapaPedido').addClass('hidden');
       $('#btnEtapaEndereco').removeClass('hidden');
       $('#btnEtapaResumo').addClass('hidden');
+      $('#btnEtapaEnviar').addClass('hidden');
       $('#btnVoltar').removeClass('hidden');
+
+      // Desabilita o botão avançar inicialmente
+      $('#btnEtapaEndereco').prop('disabled', true);
     }
 
     if (etapa == 3) {
-      $('#lblTituloEtapa').text('Resumo do pedido:');
+      $('#lblTituloEtapa').text('Endereço de entrega:');
       $('#itensCarrinho').addClass('hidden');
-      $('#localEntrega').addClass('hidden');
-      $('#resumoCarrinho').removeClass('hidden');
+      $('#formaPagamento').addClass('hidden');
+      $('#localEntrega').removeClass('hidden');
+      $('#resumoCarrinho').addClass('hidden');
 
       $('.etapa').removeClass('active');
       $('.etapa1').addClass('active');
@@ -197,8 +208,31 @@ cardapio.metodos = {
       $('.etapa3').addClass('active');
 
       $('#btnEtapaPedido').addClass('hidden');
+      $('#btnEtapaPagamento').addClass('hidden');
       $('#btnEtapaEndereco').addClass('hidden');
       $('#btnEtapaResumo').removeClass('hidden');
+      $('#btnEtapaEnviar').addClass('hidden');
+      $('#btnVoltar').removeClass('hidden');
+    }
+
+    if (etapa == 4) {
+      $('#lblTituloEtapa').text('Resumo do pedido:');
+      $('#itensCarrinho').addClass('hidden');
+      $('#formaPagamento').addClass('hidden');
+      $('#localEntrega').addClass('hidden');
+      $('#resumoCarrinho').removeClass('hidden');
+
+      $('.etapa').removeClass('active');
+      $('.etapa1').addClass('active');
+      $('.etapa2').addClass('active');
+      $('.etapa3').addClass('active');
+      $('.etapa4').addClass('active');
+
+      $('#btnEtapaPedido').addClass('hidden');
+      $('#btnEtapaPagamento').addClass('hidden');
+      $('#btnEtapaEndereco').addClass('hidden');
+      $('#btnEtapaResumo').addClass('hidden');
+      $('#btnEtapaEnviar').removeClass('hidden');
       $('#btnVoltar').removeClass('hidden');
     }
   },
@@ -207,6 +241,25 @@ cardapio.metodos = {
   voltarEtapa: () => {
     let etapa = $('.etapa.active').length;
     cardapio.metodos.carregarEtapa(etapa - 1);
+  },
+
+  // carrega a forma de pagamento
+
+  carregarPagamento: () => {
+    cardapio.metodos.carregarEtapa(2);
+  },
+
+  selecionarPagamento: (tipo) => {
+    FORMA_PAGAMENTO = tipo;
+
+    // Atualiza visualmente a seleção
+    $('.box-pagamento').removeClass('selecionado');
+    $(`#box${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`).addClass(
+      'selecionado',
+    );
+
+    // Habilita o botão avançar
+    $('#btnEtapaEndereco').prop('disabled', false);
   },
 
   // carrega a lista de itens do carrinho
@@ -313,8 +366,7 @@ cardapio.metodos = {
       cardapio.metodos.mensagem('Seu carrinho está vazio.');
       return;
     }
-
-    cardapio.metodos.carregarEtapa(2);
+    cardapio.metodos.carregarEtapa(3);
   },
 
   // API ViaCEP
@@ -419,7 +471,7 @@ cardapio.metodos = {
       complemento: complemento,
     };
 
-    cardapio.metodos.carregarEtapa(3);
+    cardapio.metodos.carregarEtapa(4);
     cardapio.metodos.carregarResumo();
   },
 
@@ -447,7 +499,12 @@ cardapio.metodos = {
     );
     $('#referencia').html(`${MEU_ENDERECO.complemento}`);
 
-    cardapio.metodos.finalizarPedido();
+    // Adiciona a forma de pagamento ao resumo
+    $('#formaPagamentoResumo').html(
+      `Forma de pagamento: ${
+        FORMA_PAGAMENTO === 'pix' ? 'PIX' : 'Cartão de Crédito'
+      }`,
+    );
   },
 
   // Atualiza o link do botão do WhatsApp
@@ -460,28 +517,23 @@ cardapio.metodos = {
       texto += `\n${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`;
       texto += `\n${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep}`;
       texto += `\n${MEU_ENDERECO.complemento}`;
+      texto += `\n*Forma de pagamento:* ${
+        FORMA_PAGAMENTO === 'pix' ? 'PIX' : 'Cartão de Crédito'
+      }`;
       texto += `\n\n*Total (com entrega): R$ ${(VALOR_CARRINHO + VALOR_ENTREGA)
         .toFixed(2)
         .replace('.', ',')}*`;
 
-      var itens = '';
+      // Codifica a mensagem para URL
+      let encode = encodeURI(texto);
+      let URL = `https://wa.me/${CELULAR_EMPRESA}?text=${encode}`;
 
-      $.each(MEU_CARRINHO, (i, e) => {
-        itens += `*${e.qntd}x* ${e.name} ....... R$ ${e.price
-          .toFixed(2)
-          .replace('.', ',')} \n`;
-
-        // último item
-        if (i + 1 == MEU_CARRINHO.length) {
-          texto = texto.replace(/\${itens}/g, itens);
-
-          // converte a URL
-          let encode = encodeURI(texto);
-          let URL = `https://wa.me/${CELULAR_EMPRESA}?text=${encode}`;
-
-          $('#btnEtapaResumo').attr('href', URL);
-        }
-      });
+      // Abre o WhatsApp em uma nova aba
+      window.open(URL, '_blank');
+    } else {
+      cardapio.metodos.mensagem(
+        'Seu carrinho está vazio ou o endereço não foi preenchido.',
+      );
     }
   },
 
