@@ -510,17 +510,26 @@ cardapio.metodos = {
   // Atualiza o link do botão do WhatsApp
   finalizarPedido: () => {
     if (MEU_CARRINHO.length > 0 && MEU_ENDERECO != null) {
-      var texto = 'Olá! gostaria de fazer um pedido:';
-      texto += `\n*Meu nome é* ${MEU_ENDERECO.usuario}\n`;
-      texto += `\n*Itens do pedido:*\n\n\${itens}`;
-      texto += '\n*Endereço de entrega:*';
-      texto += `\n${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`;
-      texto += `\n${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep}`;
-      texto += `\n${MEU_ENDERECO.complemento}`;
-      texto += `\n*Forma de pagamento:* ${
+      // Monta a lista de itens primeiro
+      var itens = '';
+      $.each(MEU_CARRINHO, (i, e) => {
+        itens += `*${e.qntd}x* ${e.name} ....... R$ ${e.price
+          .toFixed(2)
+          .replace('.', ',')}\n`;
+      });
+
+      // Monta o texto completo com os itens já formatados
+      var texto = 'Olá! gostaria de fazer um pedido:\n';
+      texto += `*Meu nome é* ${MEU_ENDERECO.usuario}\n`;
+      texto += `\n*Itens do pedido:*\n\n${itens}`;
+      texto += '\n*Endereço de entrega:*\n';
+      texto += `${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}\n`;
+      texto += `${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep}\n`;
+      texto += `${MEU_ENDERECO.complemento}\n`;
+      texto += `*Forma de pagamento:* ${
         FORMA_PAGAMENTO === 'pix' ? 'PIX' : 'Cartão de Crédito'
-      }`;
-      texto += `\n\n*Total (com entrega): R$ ${(VALOR_CARRINHO + VALOR_ENTREGA)
+      }\n`;
+      texto += `\n*Total (com entrega): R$ ${(VALOR_CARRINHO + VALOR_ENTREGA)
         .toFixed(2)
         .replace('.', ',')}*`;
 
@@ -528,7 +537,7 @@ cardapio.metodos = {
       let encode = encodeURI(texto);
       let URL = `https://wa.me/${CELULAR_EMPRESA}?text=${encode}`;
 
-      // Abre o WhatsApp em uma nova aba
+      // Abre o WhatsApp
       window.open(URL, '_blank');
     } else {
       cardapio.metodos.mensagem(
