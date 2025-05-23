@@ -490,14 +490,14 @@ cardapio.metodos = {
       $('#listaItensResumo').append(temp);
     });
 
-    $('#resumoUsuario').html(`Cliente: ${MEU_ENDERECO.usuario}`);
+    $('#resumoUsuario').html(`Nome: ${MEU_ENDERECO.usuario}`);
     $('#resumoEndereco').html(
       `${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`,
     );
     $('#cidadeEndereco').html(
       `${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep}`,
     );
-    $('#referencia').html(`${MEU_ENDERECO.complemento}`);
+    $('#referencia').html(`Complemento: ${MEU_ENDERECO.complemento}`);
 
     // Adiciona a forma de pagamento ao resumo
     $('#formaPagamentoResumo').html(

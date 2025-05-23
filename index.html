@@ -396,9 +396,7 @@
         </div>
     </footer>
 
-    <!-- adicionar o hidden na class desta div abaixo -->
-
-    <div class="modal-full animated fadeIn " id="modalCarrinho">
+    <div class="modal-full animated fadeIn hidden" id="modalCarrinho">
 
         <div class="m-header">
             <div class="container">
@@ -425,7 +423,6 @@
 
                 <div id="formaPagamento" class="row mr-0 ml-0 animated fadeIn hidden">
 
-
                     <div class="opcao-pagamento" onclick="cardapio.metodos.selecionarPagamento('pix')">
                         <input type="radio" name="formaPagamento" id="pagamentoPix" class="hidden">
                         <label for="pagamentoPix" class="box-pagamento">
@@ -447,7 +444,7 @@
                             </div>
                             <div class="info-pagamento">
                                 <h4>Cartão de Crédito</h4>
-                                <p>Parcelamento em até 12x</p>
+                                <p>Crédito À Vista</p>
                             </div>
                         </label>
                     </div>
@@ -577,7 +574,7 @@
                             <p class="texto-endereco" id="resumoEndereco"></p>
                             <p class="cidade-endereco" id="cidadeEndereco"></p>
                             <br />
-                            <p class="cidade-endereco" id="referencia"></p>
+                            <p class="cidade-endereco"><b id="referencia"></b></p>
                         </div>
                     </div>
 
